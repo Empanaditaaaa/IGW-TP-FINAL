@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Los Papotico - Retro Shop (T01)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="logo-pixel">LP</div>
+        <div class="site-title">Los Papotico</div>
+      </div>
+
+      <div class="search-area">
+        <div class="search-row">
+          <input id="searchInput" class="search-input" placeholder="Buscar juegos, géneros, plataformas..." />
+          <select id="filterSelect" class="filter-select" aria-label="Filtro">
+            <option value="">Todos</option>
+            <option value="PC">PC</option>
+            <option value="PS">PlayStation</option>
+            <option value="XBOX">Xbox</option>
+            <option value="Switch">Switch</option>
+          </select>
+          <button id="cartBtn" class="cart-btn" title="Carrito">🛒 <span id="cartCount">0</span></button>
+        </div>
+        <div class="search-hint">¡¡¡Buscà tus Juegos Preferidos Aqui!!!</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section class="offers">
+      <div class="offers-carousel" id="offersCarousel">
+        <div class="slide" data-index="0">OFERTA 1<br/><small>50% OFF</small></div>
+        <div class="slide" data-index="1">OFERTA 2<br/><small>NUEVO</small></div>
+        <div class="slide" data-index="2">OFERTA 3<br/><small>PACK RETRO</small></div>
+      </div>
+      <div class="offers-nav" id="offersNav"></div>
+    </section>
+
+    <section class="genres">
+      <div class="genres-row" id="genresRow">
+        <button class="genre">Acción</button>
+        <button class="genre">Aventura</button>
+        <button class="genre">RPG</button>
+        <button class="genre">Indie</button>
+        <button class="genre">Deportes</button>
+        <button class="genre">Estrategia</button>
+        <button class="genre">Simulación</button>
+        <button class="genre">Puzzle</button>
+      </div>
+    </section>
+
+    <section class="catalog-area">
+      <div class="catalog-list" id="catalogList">
+        <!-- tarjetas se inyectan por JS -->
+      </div>
+      <aside class="preview-panel" id="previewPanel">
+        <div class="preview-box" id="previewBox">Pasa el cursor sobre un juego para ver su imagen</div>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="site-footer">© Los Papotico — Estilo Retro Pixel • T01</footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

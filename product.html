@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Los Papotico - Ficha de Producto</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/product.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <a class="logo-pixel" href="index.html" title="Volver a inicio">LP</a>
+        <div class="site-title">Los Papotico</div>
+      </div>
+
+      <div class="search-area">
+        <div class="search-row">
+          <input id="searchInput" class="search-input" placeholder="Buscar juegos, géneros, plataformas..." />
+          <button id="cartBtn" class="cart-btn" title="Carrito">🛒 <span id="cartCount">0</span></button>
+        </div>
+        <div class="search-hint">¡¡¡Buscá tus Juegos Preferidos Aqui!!!</div>
+      </div>
+    </div>
+  </header>
+
+  <main id="top" class="product-main">
+    <section class="product-view">
+      <div class="media-column">
+        <div class="main-carousel" id="mainCarousel">
+          <div class="slide active"><img src="https://images5.alphacoders.com/889/889405.jpg" alt="Imagen principal 1"></div>
+          <div class="slide"><img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/242760/ss_772eebf0ce7bdb51546055a36185e8ee46e8acac.1920x1080.jpg?t=1699381053" alt="Imagen principal 2"></div>
+          <div class="slide"><img src="https://images.steamusercontent.com/ugc/442858231152444075/F978933680C55210E372A204A6388C56AB471C8A/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false" alt="Gameplay 1"></img></div>
+          <div class="slide"><img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/242760/ss_792069bbfdd795f3e0b139c5b4e5140f2e9ea70c.1920x1080.jpg?t=1699381053" alt="Imagen principal 3"></img></div>
+          <div class="slide"><img src="https://media.tenor.com/ROtUIks1NzgAAAAM/the-forest-armsy.gif" alt="Gameplay 2"></img></div>
+          <div class="slide"><img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/242760/ss_7a8d95143af9f801a7b5ba9a6cb23f2e5998344c.1920x1080.jpg?t=1699381053" alt="Imagen principal 4"></img></div>
+        </div>
+
+        <div class="thumbs-row" id="thumbsRow">
+          <button class="thumb active" data-index="0"><img src="https://images5.alphacoders.com/889/889405.jpg" alt="thumb1" width="100px" height="60px"></button>
+          <button class="thumb" data-index="1"><img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/242760/ss_772eebf0ce7bdb51546055a36185e8ee46e8acac.1920x1080.jpg?t=1699381053" alt="thumb2" width="100px" height="60px"></button>
+          <button class="thumb" data-index="2"><img src="https://images.steamusercontent.com/ugc/442858231152444075/F978933680C55210E372A204A6388C56AB471C8A/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false" alt="thumb3" width="100px" height="60px"></button>
+          <button class="thumb" data-index="3"><img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/242760/ss_792069bbfdd795f3e0b139c5b4e5140f2e9ea70c.1920x1080.jpg?t=1699381053" alt="thumb4" width="100px" height="60px"></button>
+          <button class="thumb" data-index="4"><img src="https://media.tenor.com/ROtUIks1NzgAAAAM/the-forest-armsy.gif" alt="thumb5" width="100px" height="60px"></button>
+          <button class="thumb" data-index="5"><img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/242760/ss_7a8d95143af9f801a7b5ba9a6cb23f2e5998344c.1920x1080.jpg?t=1699381053" alt="thumb6" width="100px" height="60px"></button>
+        </div>
+      </div>
+
+      <aside class="side-column">
+        <h1 class="product-title">The Forest</h1>
+        <div class="product-meta">
+          <div class="product-price">Precio: $10.49</div>
+          <p class="product-sub">Plataformas: PC - PlayStation - Xbox | Género: Aventura / Supervivencia</p>
+        </div>
+
+        <div class="purchase-area">
+          <a class="btn btn-buy" href="https://example.com/checkout?game=retro-racer">Comprar</a>
+          <button id="cartToggleBtn" class="btn btn-gift" type="button" aria-pressed="false">Agregar al Carrito</button>
+        </div>
+
+        <div class="achievements-card">
+          <h3>Logros</h3>
+          <ul class="achievements-list">
+            <li>
+              <img src="https://cdn.fastly.steamstatic.com/steamcommunity/public/images/apps/242760/30eb0635f7d109dc3ba0570dd842a48cd89ddcf9.jpg" alt="Logro 1">
+              <div>
+                <strong>First Night</strong>
+                <small>Sobrevive 1 noche.</small>
+              </div>
+            </li>
+            <li>
+              <img src="https://cdn.fastly.steamstatic.com/steamcommunity/public/images/apps/242760/dec3c04a54b1296bb4fe2fb7925f0be2eaf3afa4.jpg" alt="Logro 2">
+              <div>
+                <strong>Survivalist</strong>
+                <small>Sobrevive 5 noches.</small>
+              </div>
+            </li>
+            <li>
+              <img src="https://cdn.fastly.steamstatic.com/steamcommunity/public/images/apps/242760/4a0ec5f553512f6e2c96b31bed972041511b08f3.jpg" alt="Logro 3">
+              <div>
+                <strong>Climate Change</strong>
+                <small>Corta 100 árboles.</small>
+              </div>
+            </li>
+            <li>
+              <img src="https://cdn.fastly.steamstatic.com/steamcommunity/public/images/apps/242760/734ca9fc6227746e0666ac47dee18be3ea6326be.jpg" alt="Logro 4">
+              <div>
+                <strong>Minor Canibalism</strong>
+                <small>Cómete 1 enemigo.</small>
+              </div>
+            </li>
+            <li>
+              <img src="https://cdn.fastly.steamstatic.com/steamcommunity/public/images/apps/242760/3face1e571b505d739b6bc53a5b55464b4b0da95.jpg" alt="Logro 5">
+              <div>
+                <strong>Monster</strong>
+                <small>Mata a un conejo. En "Modo Campaña" o en "Modo Online".</small>
+              </div>
+            </li>
+            <li>
+              <img src="https://cdn.fastly.steamstatic.com/steamcommunity/public/images/apps/242760/8e865e68827121c67f0acf5f3410f961a9b1d496.jpg" alt="Logro 6">
+              <div>
+                <strong>Birdseye</strong>
+                <small>Mata a un ave con una flecha.</small>
+              </div>
+            </li>
+            <li>
+              <img src="https://cdn.fastly.steamstatic.com/steamcommunity/public/images/apps/242760/a7ba44fef9a65738173d3b7f6d5abfe16736c587.jpg" alt="Logro 7">
+              <div>
+                <strong>Campout</strong>
+                <small>Duerme con un compañero en "Modo Online".</small>
+              </div>
+            </li>
+            <li>
+              <img src="https://cdn.fastly.steamstatic.com/steamcommunity/public/images/apps/242760/8eb601d40f536e83119e3b4636614e8bbbfba5ed.jpg" alt="Logro 8">
+              <div>
+                <strong>First Responder</strong>
+                <small>Revive a un compañero en "Modo Online".</small>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+
+    <section class="description-section">
+      <div class="desc-left">
+        <h2>Acerca de este juego</h2>
+        <p>Retro Racer: Neon Trails es un homenaje a los arcades de los 90 con un toque moderno. Pilota coches retro en circuitos urbanos iluminados por luces de neón, desbloquea mejoras y compite en eventos globales. La campaña ofrece una experiencia narrativa ligera que sigue a un joven piloto en su búsqueda por recuperar su legado.</p>
+
+        <h3>Descripción de la Restricción de Edad</h3>
+        <p>Clasificación: +12. El juego contiene escenas de velocidad, efectos de destellos y violencia ligera entre vehículos. No contiene contenido sexual ni lenguaje extremadamente explícito. Para mayores de +16, el juego podría incluir intensas escenas de velocidad y efectos lumínicos que podrían resultar incómodos para personas sensibles.</p>
+
+        <h3>Requisitos del sistema</h3>
+        <p><strong>Mínimos:</strong></p>
+        <ul>
+          <li>OS: Windows 10 (64-bit)</li>
+          <li>CPU: Intel i3 / Ryzen 3</li>
+          <li>RAM: 8 GB</li>
+          <li>GPU: NVIDIA GTX 960 / AMD equivalente</li>
+          <li>Almacenamiento: 8 GB disponibles</li>
+        </ul>
+        <p><strong>Recomendados:</strong></p>
+        <ul>
+          <li>OS: Windows 10/11 (64-bit)</li>
+          <li>CPU: Intel i5 / Ryzen 5</li>
+          <li>RAM: 16 GB</li>
+          <li>GPU: NVIDIA GTX 1660 / RTX 2060</li>
+          <li>Almacenamiento: 12 GB SSD</li>
+        </ul>
+
+        <h3>Información sobre el desarrollo y desarrolladores</h3>
+        <p>Desarrollado por NeonBits Studio, un pequeño equipo indie con pasión por los juegos retro. El desarrollo se centró en rendimiento y estética pixel art, combinando técnicas modernas de render con arte basado en sprites. El estudio ha lanzado previamente títulos independientes en eventos y plataformas digitales.</p>
+      </div>
+
+      <div class="desc-right">
+        <div class="reviews-card">
+          <h3>Reseñas</h3>
+          <div class="reviews-scroll">
+            <article class="review">
+              <strong>Usuario: PixelFan</strong>
+              <p>Gran sensación arcade, controles ajustados y música pegadiza.</p>
+            </article>
+            <article class="review">
+              <strong>Usuario: RetroLover</strong>
+              <p>Muy divertido en multijugador local, ideal para tardes con amigos.</p>
+            </article>
+            <article class="review">
+              <strong>Usuario: Speedster</strong>
+              <p>Los circuitos son variados y los desafíos enganchan.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="related-section">
+      <h3>Juegos relacionados</h3>
+      <div class="related-carousel" id="relatedCarousel">
+        <div class="related-item">Juego 1</div>
+        <div class="related-item">Juego 2</div>
+        <div class="related-item">Juego 3</div>
+        <div class="related-item">Juego 4</div>
+      </div>
+    </section>
+
+    <div class="actions-footer">
+      <a class="btn btn-home" href="index.html">Volver</a>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div>Email: contacto@lospapotico.example</div>
+    <div>Tel: +54 9 11 1234 5678</div>
+    <div>Instagram: @lospapotico</div>
+  </footer>
+
+  <button id="backToTop" class="back-to-top" title="Volver arriba" aria-label="Volver arriba"></button>
+
+  <script>
+    (function(){
+      // Main carousel and thumbnail handling
+      const slides = document.querySelectorAll('#mainCarousel .slide');
+      const thumbs = document.querySelectorAll('#thumbsRow .thumb');
+      let current = 0;
+
+      function show(n){
+        if (slides.length === 0) return;
+        n = n % slides.length;
+        if (n < 0) n = slides.length - 1;
+        slides.forEach((s, i) => {
+          s.classList.toggle('active', i === n);
+          const v = s.querySelector('video');
+          if (v) {
+            if (i === n) {
+              v.play().catch(() => {});
+            } else {
+              v.pause();
+              v.currentTime = 0;
+            }
+          }
+        });
+        thumbs.forEach((t, i) => t.classList.toggle('active', i === n));
+        current = n;
+      }
+
+      thumbs.forEach(t => t.addEventListener('click', () => show(Number(t.dataset.index))));
+      // Auto-advance main carousel every 4s
+      if (slides.length > 0) setInterval(() => show((current + 1) % slides.length), 4000);
+
+      // Back to top button
+      const btn = document.getElementById('backToTop');
+      if (btn) {
+        window.addEventListener('scroll', () => { btn.style.opacity = window.scrollY > 200 ? '1' : '0'; });
+        btn.addEventListener('click', () => { document.getElementById('top').scrollIntoView({ behavior: 'smooth' }); });
+      }
+
+      // Simple related carousel auto-scroll
+      const related = document.getElementById('relatedCarousel');
+      if (related && related.children.length > 0) {
+        let relPos = 0;
+        setInterval(() => {
+          related.style.transform = `translateX(-${relPos * 220}px)`;
+          relPos = (relPos + 1) % related.children.length;
+        }, 3000);
+      }
+      
+      // --- Carrito: toggle 'Agregar / Quitar' y actualizar contador en header ---
+      const cartToggleBtn = document.getElementById('cartToggleBtn');
+      const cartCountSpan = document.getElementById('cartCount');
+      const headerCartBtn = document.getElementById('cartBtn');
+      let cartCount = cartCountSpan ? Number(cartCountSpan.textContent || 0) : 0;
+      let inCart = false;
+
+      if (cartToggleBtn) {
+        cartToggleBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          // Toggle state
+          inCart = !inCart;
+          if (inCart) {
+            cartCount = Math.max(0, cartCount) + 1;
+            cartToggleBtn.textContent = 'Quitar del Carrito';
+            cartToggleBtn.classList.add('in-cart');
+            cartToggleBtn.setAttribute('aria-pressed', 'true');
+          } else {
+            cartCount = Math.max(0, cartCount - 1);
+            cartToggleBtn.textContent = 'Agregar al Carrito';
+            cartToggleBtn.classList.remove('in-cart');
+            cartToggleBtn.setAttribute('aria-pressed', 'false');
+          }
+          if (cartCountSpan) cartCountSpan.textContent = String(cartCount);
+          // pequeña animación visual en el icono del header
+          if (headerCartBtn && headerCartBtn.animate) {
+            headerCartBtn.animate([
+              { transform: 'scale(1)' },
+              { transform: 'scale(1.18)' },
+              { transform: 'scale(1)' }
+            ], { duration: 220 });
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
