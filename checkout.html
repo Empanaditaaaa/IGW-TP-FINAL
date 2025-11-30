@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Los Papotico - Checkout (T03)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css"> <!-- si usas un styles global -->
+  <link rel="stylesheet" href="css/checkout.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <!-- Flecha: ahora lleva al carrito -->
+        <a id="backBtn" class="back-btn" href="carrito.html" title="Ir al carrito">
+          <svg width="36" height="36" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><path fill="#000" d="M10 16 L20 8 L20 13 L28 13 L28 19 L20 19 L20 24 Z"/></svg>
+        </a>
+        <!-- Logo LP: enlace a index (actúa como botón) -->
+        <a id="logoBtn" class="logo-pixel" href="index.html" title="Volver a inicio" role="button">LP</a>
+        <div class="site-title">Los Papotico</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="checkout-main">
+    <section class="checkout-grid">
+      <!-- LEFT: Lista de juegos -->
+      <section class="cart-column">
+        <h2>Lista de juegos</h2>
+        <div id="cartList" class="cart-list">
+          <!-- filas inyectadas por JS -->
+        </div>
+
+        <div class="cart-summary">
+          <div class="summary-row">
+            <span>Subtotal</span><span id="subtotal">$0.00</span>
+          </div>
+          <div class="summary-row total">
+            <strong>Total</strong><strong id="total">$0.00</strong>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Métodos y datos -->
+      <aside class="pay-column">
+        <div class="card pay-methods">
+          <h3><strong>Metodos<br>de Pago</strong></h3>
+
+          <!-- Botones visuales de pago: Visa arriba, PayPal debajo -->
+          <div class="pay-buttons" style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+            <button type="button" class="btn visa-btn" style="padding:10px 12px;border:3px solid #000;background:linear-gradient(180deg,#ffcc33,#f2b600);font-family:'Press Start 2P',monospace;cursor:pointer"><img src="https://thumbs.dreamstime.com/b/logotipos-de-la-visa-y-mastercard-102631953.jpg" alt="Pagar con Tarjeta" width="150px" height="90px"></button>
+            <button type="button" id="paypalBtn" class="btn paypal-btn" style="padding:10px 12px;border:3px solid #000;background:linear-gradient(180deg,#00457c,#0070ba);color:#fff;font-family:'Press Start 2P',monospace;cursor:pointer"><img src="https://d3tamksjp7q04h.cloudfront.net/2014/05/18123434/featured3_a1049a2aff88ee9ada8c1b1c3fdca69d-4.webp" alt="Pagar con PayPal" width="150px" height="90px"></button>
+          </div>
+        </div>
+
+        <form id="buyerForm" autocomplete="on">
+          <div class="card buyer-data">
+            <h3>Datos del comprador</h3>
+            <label>Nombre completo
+              <input type="text" name="name" required placeholder="Ruffiino Gabriel">
+            </label>
+            <br>
+            <label>Teléfono
+              <input type="tel" name="phone" required placeholder="+54 9 11 1234-5678">
+            </label>
+            <br>
+            <label>Email
+              <input type="email" name="email" required placeholder="contacto@lospapotico.example">
+            </label>
+          </div>
+
+          <div class="card more-data">
+            <h3>Datos de tarjeta</h3>
+            <label>Titular
+              <input type="text" name="cardholder" placeholder="Nombre en la tarjeta">
+            </label>
+            <label>D.N.I.
+              <input type="text" name="dni" placeholder="Documento del titular">
+            </label>
+            <label>Número de tarjeta
+              <input type="text" name="cardNumber" inputmode="numeric" maxlength="19" placeholder="1234 5678 9012 3456">
+            </label>
+            <label>CVV
+              <input type="text" name="cvv" inputmode="numeric" maxlength="4" placeholder="123">
+            </label>
+            <label>Fecha de vencimiento
+              <input type="text" name="expiry" placeholder="MM/AA">
+            </label>
+          </div>
+        </form>
+
+        <div class="card finalize">
+          <button id="finalizeBtn" class="btn finalize-btn">Finalizar Pago</button>
+          <div class="small-note">Pago seguro • SSL • Comprobante enviado al correo</div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="site-footer">© Los Papotico - Estilo Retro Pixel • Ticket T10</footer>
+
+  <script src="js/checkout.js"></script>
+</body>
+</html>

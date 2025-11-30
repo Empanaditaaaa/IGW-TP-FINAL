@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>Carrito — Los Papotico (T03)</title>
+
+  <!-- Fuente pixel retro -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/carrito.css">
+</head>
+<body>
+
+<div class="page-frame">
+
+  <!-- HEADER -->
+  <header class="topbar">
+
+    <!-- Botón volver atrás RECTANGULAR (enlaza a index.html) -->
+    <a id="backBtn" class="back-btn" aria-label="Volver a inicio" href="index.html">
+      <svg viewBox="0 0 24 24" width="26" height="26">
+        <path d="M15 6 L9 12 L15 18" stroke="#00ff66" stroke-width="3" fill="none" />
+      </svg>
+    </a>
+
+    <!-- Logo -->
+    <div class="logo-box">
+      <div class="logo-pixel">LP</div>
+    </div>
+
+  </header>
+
+  <!-- MAIN: 3 columnas -->
+  <main class="cart-main">
+
+    <aside class="left-rail"></aside>
+
+    <!-- Panel central -->
+    <section class="cart-panel">
+      <div class="cart-inner">
+
+        <div id="cartPlaceholder" class="cart-placeholder">
+          juegos en el carrito de compras
+        </div>
+
+        <ul id="cartItems" class="cart-list" hidden></ul>
+
+      </div>
+    </section>
+
+    <!-- Columna derecha: TOTAL + COMPRAR visibles -->
+    <aside class="right-column">
+
+      <div id="totalBox" class="total-box">
+        Total: <span id="totalPrice">$0.00</span>
+      </div>
+
+      <button id="buyBtn" class="pixel-btn buy-btn">comprar</button>
+
+    </aside>
+
+  </main>
+
+  <footer class="site-footer">© Los Papotico - Estilo Retro Pixel • Ticket T09</footer>
+
+</div>
+
+<script src="js/carrito.js"></script>
+</body>
+</html>

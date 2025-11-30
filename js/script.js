@@ -25,13 +25,13 @@
 
   // Datos de ejemplo de catálogo (pueden incluir `img` con ruta o dataURL)
   let games = [
-    {title:'The Forest', platform:'PC, Consolas', genre:'Aventura / Supervivencia', color:'#ff2d6f'},
-    {title:'Halo', platform:'PC, Consolas', genre:'Acción', color:'#5be2a1'},
-    {title:'DOOM', platform:'DISPONIBLE EN TODAS LAS PLATAFORMAS', genre:'Acción', color:'#d28bff'},
-    {title:'Half Life', platform:'PC, Consolas', genre:'Aventura', color:'#ffd166'},
-    {title:'Conter Strike', platform:'PC', genre:'Estrategia', color:'#4dd0e1'},
-    {title:'Team Fortress 2', platform:'PC', genre:'Acción', color:'#ffd1b3'},
-    {title:'Left 4 Dead', platform:'PC, Consolas', genre:'Acción', color:'#b3ffcf'},
+    {img: 'https://images5.alphacoders.com/889/889405.jpg', title:'The Forest', platform:'PC, Consolas', genre:'Aventura / Supervivencia', color:'#ff2d6f', price: '$10.49'},
+    {id: 'halo', img: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1708091/header.jpg?t=1763578010', title:'Halo Infinite (Campaña)', platform:'PC, Consolas', genre:'Acción', color:'#5be2a1', price: '$14.99'},
+    {img: 'https://hb.imgix.net/45c7791532040cbf1aa3cbb6c7bc55eddc71fe4a.jpeg?auto=compress,format&fit=crop&h=353&w=616&s=47ce3445cad514943fd822bbe021f9a2', title:'DOOM', platform:'DISPONIBLE EN TODAS LAS PLATAFORMAS', genre:'Acción', color:'#d28bff', price: '$19.99'},
+    {img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/70/capsule_616x353.jpg?t=1745368462', title:'Half Life', platform:'PC, Consolas', genre:'Aventura', color:'#ffd166', price: '$9.99'},
+    {img: 'https://gaming-cdn.com/images/products/13664/616x353/counter-strike-2-pc-juego-steam-cover.jpg?v=1695885435', title:'Counter Strike 2', platform:'PC', genre:'Estrategia', color:'#4dd0e1', price: '$24.99'},
+    {img: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/440/capsule_616x353.jpg?t=1757348372', title:'Team Fortress 2', platform:'PC', genre:'Acción', color:'#ffd1b3', price: '$4.99'},
+    {img: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/500/header.jpg', title:'Left 4 Dead', platform:'PC, Consolas', genre:'Acción', color:'#b3ffcf', price: '$7.50'},
   ];
 
   // Persistencia: si hay catálogo guardado en localStorage, úsalo (permite conservar imágenes subidas)
@@ -54,7 +54,19 @@
   const searchInput = document.getElementById('searchInput');
   const filterSelect = document.getElementById('filterSelect');
   const cartCount = document.getElementById('cartCount');
-  let cart = 0;
+  const CART_KEY = 'lp_cart';
+
+  function readCart(){
+    try{ return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); }catch(e){ return []; }
+  }
+  function writeCart(arr){
+    try{ localStorage.setItem(CART_KEY, JSON.stringify(arr)); }catch(e){}
+  }
+  function isInCart(id){ return readCart().some(it=>it.id===id); }
+  function addToCart(item){ const c = readCart(); if(!c.some(it=>it.id===item.id)){ c.push(item); writeCart(c); } }
+  function removeFromCart(id){ const c = readCart().filter(it=>it.id!==id); writeCart(c); }
+
+  let cart = readCart().length;
 
   function makeSVG(title,color,width=400,height=240){
     const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${width}' height='${height}' viewBox='0 0 ${width} ${height}'>
@@ -67,12 +79,18 @@
     return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
   }
 
+  function slugify(text){
+    return String(text).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+  }
+
   function renderCatalog(list){
     catalogList.innerHTML='';
     list.forEach((g,idx)=>{
       const card=document.createElement('div');
       card.className='card';
       // si g.img existe usarla, si no usar SVG placeholder
+      // asegurar un id único para el juego
+      g.id = g.id || slugify(g.title || ('game-' + idx));
       const thumbSrc = g.img ? g.img : makeSVG(g.title,g.color,320,200);
       card.innerHTML=`
         <div class='thumb' data-img='${thumbSrc}'>
@@ -83,11 +101,35 @@
           <div class='card-meta'>${g.genre} • ${g.platform}</div>
         </div>
         <div style='display:flex;flex-direction:column;gap:6px'>
-          <button class='add-btn'>AÑADIR</button>
-          <input type='file' accept='image/*' class='img-uploader' style='display:none' />
-          <button class='upload-btn' title='Cargar miniatura'>📁</button>
+          <div style='display:flex;gap:6px'>
+            <button class='add-btn'>AÑADIR🛒</button>
+            <button class='buy-btn'>COMPRAR💳</button>
+          </div>
         </div>
       `;
+      // make card clickable: navegar a la ficha del juego (por ahora todas apuntan a `product.html`)
+      card.setAttribute('role','button');
+      card.setAttribute('tabindex','0');
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', ()=>{
+        // mapeo declarativo de páginas por juego (usa g.id generado por slugify)
+        const pageMap = {
+          'halo': 'product2.html',
+          'doom': 'product3.html',
+          'half-life': 'product4.html',
+          'counter-strike-2': 'product5.html',
+          'team-fortress-2': 'product6.html',
+          'left-4-dead': 'product7.html'
+        };
+        try{
+          const target = pageMap[g.id] || 'product.html';
+          window.location.href = target + '?game=' + encodeURIComponent(g.id);
+        }catch(e){
+          window.location.href = 'product.html?game=' + encodeURIComponent(g.id);
+        }
+      });
+      card.addEventListener('keypress', (ev)=>{ if(ev.key==='Enter' || ev.key===' ') { ev.preventDefault(); card.click(); } });
+
       // hover preview
       const thumb = card.querySelector('.thumb');
       thumb.addEventListener('mouseenter', ()=>{
@@ -100,35 +142,55 @@
         previewBox.innerHTML = `<img src='${src}' style='max-width:100%;border:6px solid #000;image-rendering:pixelated'/>`;
       });
 
-      // add to cart
-      card.querySelector('.add-btn').addEventListener('click', ()=>{
-        cart++; cartCount.textContent = cart;
-        // feedback pequeño
-        card.style.transform='translateY(-4px)';
-        setTimeout(()=>card.style.transform='',120);
+      // add to cart (evita que el click dispare la navegación del card)
+      const addBtn = card.querySelector('.add-btn');
+      const gid = g.id;
+      addBtn.dataset.id = gid;
+      if(isInCart(gid)){
+        addBtn.textContent = 'EN CARRITO';
+        addBtn.classList.add('in-cart');
+      }
+      addBtn.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        if(isInCart(gid)){
+          // quitar del carrito
+          removeFromCart(gid);
+          cart = readCart().length;
+          cartCount.textContent = cart;
+          addBtn.textContent = 'AÑADIR';
+          addBtn.classList.remove('in-cart');
+          card.style.transform='translateY(4px)'; setTimeout(()=>card.style.transform='',120);
+          return;
+        }
+        // agregar al carrito (incluye precio si está definido)
+        addToCart({ id: gid, title: g.title, img: thumbSrc, price: g.price || '$0.00' });
+        cart = readCart().length;
+        cartCount.textContent = cart;
+        addBtn.textContent = 'EN CARRITO';
+        addBtn.classList.add('in-cart');
+        /* feedback pequeño */
+        card.style.transform='translateY(-4px)'; setTimeout(()=>card.style.transform='',120);
       });
 
-      // upload image: botón y input
-      const uploader = card.querySelector('.img-uploader');
-      const uploadBtn = card.querySelector('.upload-btn');
-      uploadBtn.addEventListener('click', (e)=>{ e.stopPropagation(); uploader.click(); });
-      uploader.addEventListener('change', (ev)=>{
-        const file = ev.target.files && ev.target.files[0];
-        if(!file) return;
-        const reader = new FileReader();
-        reader.onload = function(loadEvent){
-          const dataUrl = loadEvent.target.result;
-          // actualizar datos del juego (g es cerradura de este bucle)
-          g.img = dataUrl;
-          // actualizar DOM miniatura y preview
-          const imgEl = card.querySelector('.thumb-img');
-          imgEl.src = dataUrl;
-          card.querySelector('.thumb').dataset.img = dataUrl;
-          previewBox.innerHTML = `<img src='${dataUrl}' style='max-width:100%;border:6px solid #000;image-rendering:pixelated'/>`;
-          saveGames();
-        };
-        reader.readAsDataURL(file);
-      });
+      // boton COMPRAR: añade al carrito (si no está) y navega a carrito.html
+      const buyBtn = card.querySelector('.buy-btn');
+      if(buyBtn){
+        buyBtn.addEventListener('click', (e)=>{
+          e.stopPropagation();
+          if(!isInCart(gid)){
+            addToCart({ id: gid, title: g.title, img: thumbSrc });
+            cart = readCart().length;
+            cartCount.textContent = cart;
+            // sincronizar el botón AÑADIR
+            addBtn.textContent = 'EN CARRITO';
+            addBtn.classList.add('in-cart');
+          }
+          // llevar al carrito para completar la compra
+          window.location.href = 'carrito.html';
+        });
+      }
+
+      // Nota: las miniaturas se generan desde código (makeSVG) o desde `g.img` si existe.
 
       catalogList.appendChild(card);
     });
@@ -152,6 +214,13 @@
 
   // inicializar
   renderCatalog(games);
+  // setear contador inicial y comportamiento del botón del header
+  cartCount.textContent = cart;
+  const cartBtn = document.getElementById('cartBtn');
+  if(cartBtn){
+    cartBtn.addEventListener('click', ()=>{ window.location.href = 'carrito.html'; });
+  }
+
   previewBox.textContent = 'Pasa el cursor sobre un juego para ver su imagen';
 
 })();

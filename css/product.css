@@ -46,7 +46,7 @@ body{background:var(--bg);color:#fff;font-family:'Press Start 2P',monospace;}
 .review{border-bottom:1px dashed rgb(21, 255, 0);padding:8px 0}
 
 /* Separación adicional sólo para la tarjeta de reseñas (mover hacia abajo sin tocar otras columnas) */
-.reviews-card { margin-top: 400px; }
+.reviews-card { margin-top: 290%; }
 .related-section{margin-top:18px}
 .related-carousel{display:flex;gap:12px;overflow:hidden;transition:transform .5s ease}
 .related-item{min-width:200px;height:90px;background:var(--panel);border:3px solid var(--accent);display:flex;align-items:center;justify-content:center;color:#fff}
