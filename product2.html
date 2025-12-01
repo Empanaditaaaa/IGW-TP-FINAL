@@ -149,6 +149,28 @@
 
   <script>
     (function(){
+        // Sincronizar imágenes desde el catálogo (si se pasó ?game=slug)
+        (function(){
+          try{
+            const params = new URLSearchParams(window.location.search);
+            const gameParam = params.get('game');
+            if(gameParam){
+              const catalog = JSON.parse(localStorage.getItem('catalogGames') || '[]');
+              const g = catalog.find(it => it.id === gameParam || (it.title && String(it.title).toLowerCase().replace(/[^a-z0-9]+/g,'-')===gameParam));
+              if(g){
+                const screens = Array.isArray(g.screens) && g.screens.length>0 ? g.screens : (g.img ? [g.img] : []);
+                if(screens.length>0){
+                  const main = document.getElementById('mainCarousel');
+                  const thumbs = document.getElementById('thumbsRow');
+                  if(main) main.innerHTML = screens.map((s,i)=>`<div class="slide ${i===0? 'active':''}"><img src='${s}' alt='Imagen ${i+1}'></div>`).join('');
+                  if(thumbs) thumbs.innerHTML = screens.map((s,i)=>`<button class="thumb ${i===0? 'active':''}" data-index='${i}'><img src='${s}' width='100px' height='60px' alt='thumb${i+1}'></button>`).join('');
+                  const titleEl = document.querySelector('.product-title'); if(titleEl && g.title) titleEl.textContent = g.title;
+                  const priceEl = document.querySelector('.product-price'); if(priceEl && g.price) priceEl.textContent = 'Precio: ' + g.price;
+                }
+              }
+            }
+          }catch(e){ console.warn('No se pudieron cargar screens desde catalogGames', e); }
+        })();
       // Main carousel and thumbnail handling
       const slides = document.querySelectorAll('#mainCarousel .slide');
       const thumbs = document.querySelectorAll('#thumbsRow .thumb');

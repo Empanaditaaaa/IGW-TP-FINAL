@@ -26,12 +26,12 @@
   // Datos de ejemplo de catálogo (pueden incluir `img` con ruta o dataURL)
   let games = [
     {img: 'https://images5.alphacoders.com/889/889405.jpg', title:'The Forest', platform:'PC, Consolas', genre:'Aventura / Supervivencia', color:'#ff2d6f', price: '$10.49'},
-    {id: 'halo', img: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1708091/header.jpg?t=1763578010', title:'Halo Infinite (Campaña)', platform:'PC, Consolas', genre:'Acción', color:'#5be2a1', price: '$14.99'},
-    {img: 'https://hb.imgix.net/45c7791532040cbf1aa3cbb6c7bc55eddc71fe4a.jpeg?auto=compress,format&fit=crop&h=353&w=616&s=47ce3445cad514943fd822bbe021f9a2', title:'DOOM', platform:'DISPONIBLE EN TODAS LAS PLATAFORMAS', genre:'Acción', color:'#d28bff', price: '$19.99'},
-    {img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/70/capsule_616x353.jpg?t=1745368462', title:'Half Life', platform:'PC, Consolas', genre:'Aventura', color:'#ffd166', price: '$9.99'},
-    {img: 'https://gaming-cdn.com/images/products/13664/616x353/counter-strike-2-pc-juego-steam-cover.jpg?v=1695885435', title:'Counter Strike 2', platform:'PC', genre:'Estrategia', color:'#4dd0e1', price: '$24.99'},
-    {img: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/440/capsule_616x353.jpg?t=1757348372', title:'Team Fortress 2', platform:'PC', genre:'Acción', color:'#ffd1b3', price: '$4.99'},
-    {img: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/500/header.jpg', title:'Left 4 Dead', platform:'PC, Consolas', genre:'Acción', color:'#b3ffcf', price: '$7.50'},
+    {id: 'halo', img: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1708091/header.jpg?t=1763578010', title:'Halo Infinite (Campaña)', platform:'PC, Consolas', genre:'Acción', color:'#5be2a1', price: '$69.99'},
+    {img: 'https://hb.imgix.net/45c7791532040cbf1aa3cbb6c7bc55eddc71fe4a.jpeg?auto=compress,format&fit=crop&h=353&w=616&s=47ce3445cad514943fd822bbe021f9a2', title:'DOOM', platform:'DISPONIBLE EN TODAS LAS PLATAFORMAS', genre:'Acción', color:'#d28bff', price: '$2.39'},
+    {img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/70/capsule_616x353.jpg?t=1745368462', title:'Half Life', platform:'PC, Consolas', genre:'Aventura', color:'#ffd166', price: '$5,79'},
+    {img: 'https://gaming-cdn.com/images/products/13664/616x353/counter-strike-2-pc-juego-steam-cover.jpg?v=1695885435', title:'Counter Strike 2', platform:'PC', genre:'Estrategia', color:'#4dd0e1', price: 'Gratis'},
+    {img: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/440/capsule_616x353.jpg?t=1757348372', title:'Team Fortress 2', platform:'PC', genre:'Acción', color:'#ffd1b3', price: 'Gratis'},
+    {img: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/500/header.jpg', title:'Left 4 Dead', platform:'PC, Consolas', genre:'Acción', color:'#b3ffcf', price: '$5.79'},
   ];
 
   // Persistencia: si hay catálogo guardado en localStorage, úsalo (permite conservar imágenes subidas)
@@ -51,6 +51,8 @@
 
   const catalogList = document.getElementById('catalogList');
   const previewBox = document.getElementById('previewBox');
+  const previewPanel = document.getElementById('previewPanel');
+  const previewPanelOrigBorder = previewPanel ? getComputedStyle(previewPanel).borderColor : null;
   const searchInput = document.getElementById('searchInput');
   const filterSelect = document.getElementById('filterSelect');
   const cartCount = document.getElementById('cartCount');
@@ -83,21 +85,67 @@
     return String(text).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
   }
 
-  function renderCatalog(list){
+  const pageMap = {
+    'halo': 'product2.html',
+    'doom': 'product3.html',
+    'half-life': 'product4.html',
+    'counter-strike-2': 'product5.html',
+    'team-fortress-2': 'product6.html',
+    'left-4-dead': 'product7.html'
+  };
+
+  async function fetchScreensFromProduct(filePath){
+    try{
+      const res = await fetch(filePath, {cache: 'no-store'});
+      if(!res.ok) return null;
+      const text = await res.text();
+      const doc = new DOMParser().parseFromString(text, 'text/html');
+      const imgs = Array.from(doc.querySelectorAll('#mainCarousel img'))
+        .map(i=>i.src).filter(Boolean);
+      if(imgs.length>0) return imgs;
+      const thumbs = Array.from(doc.querySelectorAll('#thumbsRow img')).map(i=>i.src).filter(Boolean);
+      if(thumbs.length>0) return thumbs;
+      return null;
+    }catch(e){ return null; }
+  }
+
+  async function renderCatalog(list){
     catalogList.innerHTML='';
-    list.forEach((g,idx)=>{
+    for(const [idx,g] of list.entries()){
+      // allow awaiting network fetches per item
       const card=document.createElement('div');
       card.className='card';
       // si g.img existe usarla, si no usar SVG placeholder
       // asegurar un id único para el juego
       g.id = g.id || slugify(g.title || ('game-' + idx));
       const thumbSrc = g.img ? g.img : makeSVG(g.title,g.color,320,200);
+      // preparar lista de screenshots. Intentar obtenerlas desde la página product correspondiente
+      let screens = null;
+      try{
+        const mapped = pageMap[g.id];
+        if(mapped){
+          const fetched = await fetchScreensFromProduct(mapped);
+          if(fetched && fetched.length>0) screens = fetched;
+        }
+        // si no encontramos archivo específico, también intentar product.html?game=slug
+        if(!screens){
+          const tryUrl = 'product.html?game=' + encodeURIComponent(g.id);
+          const fetched2 = await fetchScreensFromProduct(tryUrl);
+          if(fetched2 && fetched2.length>0) screens = fetched2;
+        }
+      }catch(e){ screens = null; }
+      if(!screens || !Array.isArray(screens) || screens.length===0){
+        screens = g.screens && Array.isArray(g.screens) && g.screens.length>0 ? g.screens : [thumbSrc, thumbSrc, thumbSrc];
+      }
       card.innerHTML=`
-        <div class='thumb' data-img='${thumbSrc}'>
+        <div class='thumb' data-img='${thumbSrc}' data-screens='${JSON.stringify(screens)}'>
           <img class='thumb-img' src='${thumbSrc}' alt='${g.title} thumbnail' />
         </div>
         <div class='card-info'>
-          <div class='card-title'>${g.title}</div>
+          <div style='display:flex;align-items:center;gap:8px'>
+            <div class='card-title'>${g.title}</div>
+            <div class='card-price'>${g.price || ''}</div>
+          </div>
           <div class='card-meta'>${g.genre} • ${g.platform}</div>
         </div>
         <div style='display:flex;flex-direction:column;gap:6px'>
@@ -133,13 +181,28 @@
       // hover preview
       const thumb = card.querySelector('.thumb');
       thumb.addEventListener('mouseenter', ()=>{
-        const src=thumb.dataset.img;
-        previewBox.innerHTML = `<img src='${src}' style='max-width:100%;border:6px solid #000;image-rendering:pixelated'/>`;
+        // mostrar todas las screenshots apiladas en el preview
+        const raw = thumb.dataset.screens || '[]';
+        let arr = [];
+        try{ arr = JSON.parse(raw); }catch(e){ arr = [thumb.dataset.img]; }
+        if(!Array.isArray(arr) || arr.length===0) arr = [thumb.dataset.img];
+        // añadir una imagen extra (duplicar la última) para mostrar "una más" debajo
+        try{ arr = arr.concat([arr[arr.length-1]]); }catch(e){}
+        previewBox.innerHTML = arr.map(s=>`<img class='preview-img' src='${s}' alt='preview'/>`).join('');
+        if(previewPanel){ previewPanel.style.borderColor = '#ffd700'; }
+      });
+      thumb.addEventListener('mouseleave', ()=>{
+        if(previewPanel){ previewPanel.style.borderColor = previewPanelOrigBorder || '#ffd700'; }
       });
       thumb.addEventListener('click', ()=>{
         // también mostrar al click en pantallas táctiles
-        const src=thumb.dataset.img;
-        previewBox.innerHTML = `<img src='${src}' style='max-width:100%;border:6px solid #000;image-rendering:pixelated'/>`;
+        const raw = thumb.dataset.screens || '[]';
+        let arr = [];
+        try{ arr = JSON.parse(raw); }catch(e){ arr = [thumb.dataset.img]; }
+        if(!Array.isArray(arr) || arr.length===0) arr = [thumb.dataset.img];
+        // duplicar la última para añadir "una más" debajo
+        try{ arr = arr.concat([arr[arr.length-1]]); }catch(e){}
+        previewBox.innerHTML = arr.map(s=>`<img class='preview-img' src='${s}' alt='preview'/>`).join('');
       });
 
       // add to cart (evita que el click dispare la navegación del card)
@@ -178,22 +241,22 @@
         buyBtn.addEventListener('click', (e)=>{
           e.stopPropagation();
           if(!isInCart(gid)){
-            addToCart({ id: gid, title: g.title, img: thumbSrc });
+            addToCart({ id: gid, title: g.title, img: thumbSrc, price: g.price || '$0.00' });
             cart = readCart().length;
             cartCount.textContent = cart;
             // sincronizar el botón AÑADIR
             addBtn.textContent = 'EN CARRITO';
             addBtn.classList.add('in-cart');
           }
-          // llevar al carrito para completar la compra
-          window.location.href = 'carrito.html';
+          // llevar al checkout para completar la compra
+          window.location.href = 'checkout.html';
         });
       }
 
       // Nota: las miniaturas se generan desde código (makeSVG) o desde `g.img` si existe.
 
       catalogList.appendChild(card);
-    });
+    }
   }
 
   // filtro y busqueda
