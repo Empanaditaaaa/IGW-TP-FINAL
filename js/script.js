@@ -28,7 +28,7 @@
     {img: 'https://images5.alphacoders.com/889/889405.jpg', title:'The Forest', platform:'PC, Consolas', genre:'Aventura / Supervivencia', color:'#ff2d6f', price: '$10.49'},
     {id: 'halo', img: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1708091/header.jpg?t=1763578010', title:'Halo Infinite (Campaña)', platform:'PC, Consolas', genre:'Acción', color:'#5be2a1', price: '$69.99'},
     {img: 'https://hb.imgix.net/45c7791532040cbf1aa3cbb6c7bc55eddc71fe4a.jpeg?auto=compress,format&fit=crop&h=353&w=616&s=47ce3445cad514943fd822bbe021f9a2', title:'DOOM', platform:'DISPONIBLE EN TODAS LAS PLATAFORMAS', genre:'Acción', color:'#d28bff', price: '$2.39'},
-    {img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/70/capsule_616x353.jpg?t=1745368462', title:'Half Life', platform:'PC, Consolas', genre:'Aventura', color:'#ffd166', price: '$5,79'},
+    {img: 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/70/capsule_616x353.jpg?t=1745368462', title:'Half Life', platform:'PC, Consolas', genre:'Aventura', color:'#ffd166', price: '$5.79'},
     {img: 'https://gaming-cdn.com/images/products/13664/616x353/counter-strike-2-pc-juego-steam-cover.jpg?v=1695885435', title:'Counter Strike 2', platform:'PC', genre:'Estrategia', color:'#4dd0e1', price: 'Gratis'},
     {img: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/440/capsule_616x353.jpg?t=1757348372', title:'Team Fortress 2', platform:'PC', genre:'Acción', color:'#ffd1b3', price: 'Gratis'},
     {img: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/500/header.jpg', title:'Left 4 Dead', platform:'PC, Consolas', genre:'Acción', color:'#b3ffcf', price: '$5.79'},
@@ -264,8 +264,21 @@
     const q = searchInput.value.trim().toLowerCase();
     const f = filterSelect.value;
     const filtered = games.filter(g=>{
-      const matchQ = !q || g.title.toLowerCase().includes(q) || g.genre.toLowerCase().includes(q);
-      const matchF = !f || g.platform===f;
+      const title = (g.title||'').toString().toLowerCase();
+      const genre = (g.genre||'').toString().toLowerCase();
+      const platform = (g.platform||'').toString().toLowerCase();
+      const matchQ = !q || title.includes(q) || genre.includes(q);
+      // soportar coincidencias parciales: p.ej. "Consola" debe coincidir con "PC, Consolas" o "PlayStation"
+      let matchF = true;
+      if(f){
+        const fLow = f.toString().toLowerCase();
+        // coincidencia por inclusión
+        matchF = platform.includes(fLow);
+        // caso especial: si el usuario eligió 'consola' queremos abarcar PS/XBOX/Switch y variantes
+        if(!matchF && fLow === 'consola'){
+          matchF = /ps|playstation|xbox|switch|consola|consolas/.test(platform);
+        }
+      }
       return matchQ && matchF;
     });
     renderCatalog(filtered);
